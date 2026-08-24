@@ -4,7 +4,7 @@
 > **원리**: 흡입 → 선별 → 변환 → 방출 → 재점화 (닫힌 루프)  
 > **상태**: ✅ 가동 검증 완료 (134 입력 → 42 카드 → 3채널 방출, ~4초)  
 > **License**: Apache 2.0 · **Python 3.10+** · 의존성: feedparser, requests, numpy, httpx  
-> **Demo**: <https://yourname.github.io/golden-bough/>
+> **Demo**: <https://mdpepastor3004.github.io/golden-bough/>
 
 ---
 
