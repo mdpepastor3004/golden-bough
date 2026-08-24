@@ -1,5 +1,11 @@
 # 🏵️ 황금가지 무한동력 에이전트 (GoldenBough Infinite Engine v2.0)
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg)](https://www.python.org/)
+[![Dependencies](https://img.shields.io/badge/deps-feedparser%20%7C%20requests%20%7C%20numpy%20%7C%20httpx-green.svg)](requirements.txt)
+[![GitHub Pages](https://img.shields.io/badge/Demo-Live-brightgreen.svg)](https://mdpepastor3004.github.io/golden-bough/)
+[![GitHub](https://img.shields.io/badge/GitHub-mdpepastor3004%2Fgolden--bough-181717.svg)](https://github.com/mdpepastor3004/golden-bough)
+
 > **연료**: 인터넷에서 실시간으로 생성되는 인간+AI 산출 데이터  
 > **원리**: 흡입 → 선별 → 변환 → 방출 → 재점화 (닫힌 루프)  
 > **상태**: ✅ 가동 검증 완료 (134 입력 → 42 카드 → 3채널 방출, ~4초)  
