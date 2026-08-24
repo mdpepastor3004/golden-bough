@@ -1,0 +1,47 @@
+# GoldenBough .gitignore
+
+# 1) 데이터/산출물/로그 — 실제 크롤링 결과는 공개 안 함
+data/
+logs/
+
+# 2) 다음 사이클 ingest 설정 (동적 가중치 캐시)
+deploy/next_ingest_config.json
+
+# 2-1) deploy 디렉토리에서 git이 추적할 화이트리스트는 아래만
+!deploy/.gitkeep
+!deploy/pipeline.py
+!deploy/golden_bough.sh
+
+# 3) 환경변수 (.env로 빼서 사용)
+.env
+.env.local
+
+# 4) Python 캐시
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# 5) 가상환경
+venv/
+env/
+.venv/
+
+# 6) OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# 7) IDE
+.idea/
+.vscode/
+*.iml
+
+# 8) 임시/백업
+*.bak
+*.tmp
+*.log

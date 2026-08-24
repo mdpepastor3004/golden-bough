@@ -1,0 +1,13 @@
+# GoldenBough 핵심 의존성 (모두 가벼움)
+feedparser>=6.0.0
+requests>=2.31.0
+numpy>=1.24.0
+httpx>=0.25.0
+
+# 선택 (LLM 임팩트 강화 — 키 있을 때만 활성화)
+# openai>=1.0.0
+# anthropic>=0.18.0
+# google-generativeai>=0.3.0
+
+# 동적 크롤러 (선택)
+# playwright>=1.40.0
