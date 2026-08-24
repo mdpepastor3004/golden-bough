@@ -253,6 +253,19 @@ def run_pipeline(mode="sequential", use_llm=False, llm_provider=None, channels=N
         "duration_sec": korean_result.get("duration_sec", 0)
     }
 
+    # Stage 7: 글로벌 문제해결 자동화 서비스 제안 (Global Problems Bot)
+    if verbose:
+        print("\n" + "=" * 60)
+        print("🤖 Agent 7: 글로벌 문제해결 서비스 제안")
+        print("=" * 60)
+    global_result = run_module("global_problems", args=["--loop"])
+    log["agents"]["global_problems"] = global_result
+    log["stages"]["global_problems"] = {
+        "proposals_generated": global_result.get("proposals_generated", 0),
+        "domains_matched": global_result.get("domains_matched", {}),
+        "duration_sec": global_result.get("duration_sec", 0)
+    }
+
     # 총평
     log["finished_at"] = datetime.now(timezone.utc).isoformat()
     log["total_duration_sec"] = round(time.time() - t0, 2)

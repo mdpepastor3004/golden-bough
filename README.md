@@ -315,3 +315,61 @@ python3 -m korean_problems --loop
 
 각 에이전트는 **독립 실행 가능**하므로 일부만 디버깅·테스트하기 쉽다.
 
+
+---
+
+## 🌍 v3.1: 글로벌 봇 추가 (이중 루프)
+
+v3.0의 한국 봇에 이어, **영어권 글로벌 봇**을 추가하여 이중 분류 루프를 구성했다.
+
+### 글로벌 도메인 봇 (6개)
+
+| 도메인 | 라벨 | pain points | 서비스 제안 |
+|--------|------|-------------|-------------|
+| `productivity` | ⚡ Productivity & Tools | 5 | DeepFocus OS, MeetingMiner |
+| `finance` | 💰 Personal Finance & Wealth | 5 | TaxPilot AI, WealthOracle |
+| `health` | 🏥 Health & Longevity | 5 | BioTwin |
+| `creator` | 🎨 Creator Economy | 5 | CreatorOS, AntiSlop Shield |
+| `education` | 🎓 Education & Skills | 5 | SkillGraph |
+| `aiops` | 🤖 AI/ML Infrastructure | 5 | ModelRouter, EvalForge |
+
+### 실행
+
+```bash
+# 글로벌 봇 단독 실행
+python3 -m global_problems --list
+python3 -m global_problems --loop
+
+# v3.1 풀사이클 (7 에이전트)
+python3 deploy/pipeline.py --mode sequential
+```
+
+### 검증된 글로벌 매칭
+
+```
+RSS 42 cards → 글로벌 분류:
+  aiops: 15  (AI/ML 인프라 다수 — ModelRouter, EvalForge)
+  education: 2  (SkillGraph)
+  finance: 1  (TaxPilot AI)
+  creator: 1  (CreatorOS)
+```
+
+### 이중 루프 아키텍처
+
+```
+┌─────────────┐         ┌──────────────┐
+│  한국 봇 (6)  │         │ 글로벌 봇 (6) │
+│  korean_     │         │  global_     │
+│  problems    │         │  problems    │
+└──────┬──────┘         └──────┬───────┘
+       │                       │
+       └───────────┬───────────┘
+                   ↓
+         12개 도메인 통합 제안
+         (data/korean_problems/ +
+          data/global_problems/)
+                   ↓
+         다음 ingest 가중치 갱신
+         (가치 있는 데이터 우선 흡입)
+```
+
