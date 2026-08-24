@@ -188,6 +188,34 @@ export TELEGRAM_CHAT_ID=...</div>
 </section>
 
 <section class="section">
+  <h2>🇰🇷 한국적 문제해결 데이터 루프 (v3.0 신규)</h2>
+  <p><b>황금가지 원칙:</b> 한국 정부·대기업은 RSS를 거의 제공하지 않는다 → 한국적 문제(부동산/취업/자격증/창업/정부지원)를 자동 해결하려면 <b>자체 어댑터</b>가 필수다.</p>
+  <p style="margin-top:12px">v3.0은 OpenBot 스타일의 <b>분산 에이전트 오케스트레이션</b>으로, 6번째 에이전트 <code>korean_problems</code>가 이 루프를 자동화한다.</p>
+
+  <div class="grid">
+    <div class="card"><div class="icon">🏠</div><h3>부동산 봇</h3><p>청약/전세/갭투자 — 청약가드, 전세방패</p></div>
+    <div class="card"><div class="icon">💼</div><h3>취업 봇</h3><p>NCS/자소서/6관정복 — 자소서 닥터, 코치</p></div>
+    <div class="card"><div class="icon">📜</div><h3>자격증 봇</h3><p>응시자격/일정/경력 — 자격증 트래커</p></div>
+    <div class="card"><div class="icon">🚀</div><h3>창업 봇</h3><p>지원사업/입주/세무 — 창업 캘린더, 세무 봇</p></div>
+    <div class="card"><div class="icon">🏛️</div><h3>정부 봇</h3><p>복지/청년정책 — 복지 파인더</p></div>
+    <div class="card"><div class="icon">📈</div><h3>트렌드 봇</h3><p>Z세대/MZ/수출 — 트렌드 레이더</p></div>
+  </div>
+
+  <h3 style="margin-top:32px">루프 동작</h3>
+  <div class="diagram">흡입 (한국 소스 10개 자동 머지)
+    ↓
+선별 + 변환 (병렬 옵션)
+    ↓
+방출 (HTML/MD/JSON) + 한국 도메인 분류 (휴리스틱)
+    ↓
+도메인별 pain point 매칭 + 서비스 제안 자동 생성
+    ↓
+JSONL 저장 → 다음 ingest 가중치 갱신
+    ↓
+(다시 흡입으로)</div>
+</section>
+
+<section class="section">
   <h2>설계 원칙</h2>
   <ul style="padding-left:24px">
     <li><b>무거운 의존성 0</b> — numpy + requests + feedparser + httpx. PyTorch/Transformers 없이 동작.</li>

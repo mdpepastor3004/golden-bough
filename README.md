@@ -1,14 +1,17 @@
-# 🏵️ 황금가지 무한동력 에이전트 (GoldenBough Infinite Engine v2.0)
+# 🏵️ 황금가지 무한동력 에이전트 (GoldenBough Infinite Engine v3.0)
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/deps-feedparser%20%7C%20requests%20%7C%20numpy%20%7C%20httpx-green.svg)](requirements.txt)
 [![GitHub Pages](https://img.shields.io/badge/Demo-Live-brightgreen.svg)](https://mdpepastor3004.github.io/golden-bough/)
 [![GitHub](https://img.shields.io/badge/GitHub-mdpepastor3004%2Fgolden--bough-181717.svg)](https://github.com/mdpepastor3004/golden-bough)
+[![v3.0](https://img.shields.io/badge/version-v3.0--distributed--agents-gold.svg)](#)
 
 > **연료**: 인터넷에서 실시간으로 생성되는 인간+AI 산출 데이터  
 > **원리**: 흡입 → 선별 → 변환 → 방출 → 재점화 (닫힌 루프)  
-> **상태**: ✅ 가동 검증 완료 (134 입력 → 42 카드 → 3채널 방출, ~4초)  
+> **아키텍처**: OpenBot 스타일 **분산 에이전트 오케스트레이션** (6개 독립 에이전트)  
+> **한국 모드**: 황금가지 원칙 기반 **한국적 문제해결 자동화 서비스 제안** 데이터 루프 내장  
+> **상태**: ✅ 가동 검증 완료 (134 입력 → 42 카드 → 3채널 방출 → 한국 제안 봇)  
 > **License**: Apache 2.0 · **Python 3.10+** · 의존성: feedparser, requests, numpy, httpx  
 > **Demo**: <https://mdpepastor3004.github.io/golden-bough/>
 
@@ -190,3 +193,125 @@ OPENAI_API_KEY=sk-... python3 deploy/pipeline.py --llm
 # 4) 자동실행 등록
 bash deploy/golden_bough.sh install-cron
 ```
+
+---
+
+## 🆕 v3.0: 분산 에이전트 오케스트레이션 (OpenBot 스타일)
+
+**기존 v2.0** → 단일 `pipeline.py`가 모든 모듈을 import하여 순차 실행  
+**v3.0** → 각 모듈이 **독립적인 서브프로세스(에이전트)** 로 실행되며, `deploy/pipeline.py`는 오케스트레이터 역할만 담당
+
+### 6개 독립 에이전트
+
+| # | 에이전트 | 역할 | 실행 방식 |
+|---|---------|------|----------|
+| 1 | **ingest** | RSS 6 + API 3 + 정적크롤러 3 + 한국 소스 10 = 총 22개 소스 | `python -m ingest` |
+| 2 | **filter** | 중복·노이즈 제거 + 0~100 가치 스코어링 | `python -m filter` |
+| 3 | **transform** | TextRank 요약 + 키워드 + 인사이트카드 (+ LLM 옵션) | `python -m transform` |
+| 4 | **emit** | HTML 대시보드 + MD 뉴스레터 + JSON API | `python -m emit` |
+| 5 | **feedback** | 가중치 동적 재계산 → 다음 ingest 설정 갱신 | `python -m feedback` |
+| 6 | **korean_problems** 🇰🇷 | 황금가지 원칙 기반 한국적 문제해결 자동화 서비스 제안 | `python -m korean_problems` |
+
+### 실행 모드
+
+```bash
+# 순차 실행 (기본)
+python3 deploy/pipeline.py --mode sequential
+
+# 병렬 실행 (filter + transform 동시)
+python3 deploy/pipeline.py --mode parallel
+```
+
+---
+
+## 🇰🇷 황금가지 원칙 기반 한국적 문제해결 데이터 루프
+
+**핵심 통찰:** 한국 정부·대기업·플랫폼은 RSS를 거의 제공하지 않는다.  
+→ 한국적 문제(부동산, 취업, 자격증, 창업, 정부지원)를 자동 해결하려면 **자체 크롤러/API 어댑터**가 필수.
+
+**`korean_problems/` 모듈이 이 루프를 자동화:**
+
+```
+┌─────────────────────────────────────────────┐
+│ 1. 한국 도메인 6종 등록 (봇)                  │
+│    - realestate / jobs / certifications /    │
+│      startups / government / trends          │
+├─────────────────────────────────────────────┤
+│ 2. 흡입 시 한국 소스 10개 자동 머지           │
+│    (네이버부동산, 사람인, 정책브리핑 등)        │
+├─────────────────────────────────────────────┤
+│ 3. 변환된 인사이트 → 도메인별 자동 분류       │
+│    (키워드 매칭 휴리스틱)                      │
+├─────────────────────────────────────────────┤
+│ 4. 도메인별 pain point 매칭 +                 │
+│    자동화 서비스 제안 자동 생성                │
+│    (이름, 설명, 스택, 수익화 모델)            │
+├─────────────────────────────────────────────┤
+│ 5. JSONL 저장 → 다음 사이클 가중치 갱신      │
+│    → 한국 소스 가중치 자동 재조정             │
+└─────────────────────────────────────────────┘
+```
+
+### 등록된 한국 도메인 봇
+
+```bash
+python3 -m korean_problems --list
+```
+
+| 도메인 | 라벨 | pain points | 서비스 제안 |
+|--------|------|-------------|-------------|
+| `realestate` | 🏠 부동산 | 5 | 청약가드, 전세방패 |
+| `jobs` | 💼 취업/직업 | 5 | 자소서 닥터, 6관정복 코치 |
+| `certifications` | 📜 자격증/시험 | 5 | 자격증 트래커 |
+| `startups` | 🚀 창업/1인사업 | 5 | 창업 캘린더, 1인사업 세무 봇 |
+| `government` | 🏛️ 정부정책/지원금 | 5 | 복지 파인더 |
+| `trends` | 📈 트렌드/문화 | 5 | 트렌드 레이더 |
+
+### 제안 루프 실행
+
+```bash
+# 한 번 실행 (최근 curated → 분류 → 제안 생성 → JSONL 저장)
+python3 -m korean_problems --loop
+```
+
+출력 예시 (`data/korean_problems/YYYY-MM-DD/proposals.jsonl`):
+
+```json
+{
+  "domain": "realestate",
+  "matched_pain": "청년층 부동산 정보 비대칭",
+  "service_proposal": {
+    "name": "청약가드 (CheongYakGuard)",
+    "description": "청약 공고 자동 수집 + 당첨 확률 시뮬레이션 + 알림",
+    "stack": ["Python", "Playwright", "텔레그램 봇"],
+    "monetization": "월 9,900원 구독 / 기업용 API"
+  }
+}
+```
+
+---
+
+## 🛠️ 각 에이전트 직접 호출 (단독 실행)
+
+```bash
+# 1단계만: 데이터 흡입
+python3 -m ingest --parallel
+
+# 2단계만: 선별
+python3 -m filter
+
+# 3단계만: 변환 (LLM 임팩트 켜기)
+python3 -m transform --use-llm --llm-provider openai
+
+# 4단계만: 방출 (채널 지정)
+python3 -m emit --channels html md
+
+# 5단계만: 재점화
+python3 -m feedback --simulate-reactions
+
+# 6단계만: 한국 문제 제안 봇
+python3 -m korean_problems --loop
+```
+
+각 에이전트는 **독립 실행 가능**하므로 일부만 디버깅·테스트하기 쉽다.
+
